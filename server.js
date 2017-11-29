@@ -7,14 +7,19 @@ var port = process.env.PORT || 8080;
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-	res.render('./index');
-	// res.status(200).send('nothing to see here!');
-	// console.log("hellooooo");
+	var spawn = require('child_process').spawn;
+	var python = spawn('python', ['./analyze.py', req.query.text]);
+	python.stdout.on('data', function(data) {
+		var data = {
+			locals: {
+				text: data.toString()
+			}
+		}
+		res.render('./index', data);
+	});
 });
 
 app.get('/result', function(req, res) {
-	res.render('./temp');
-
 	// var java = spawn('java', ['java', '-cp', '"*"', '-Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP',
 	// 	'-annotators', 'tokenize,ssplit,pos,lemma,ner,parse,dcoref', req.query.text]);
 	// var spawn = require('child_process').spawn;
@@ -28,18 +33,6 @@ app.get('/result', function(req, res) {
 
 	// java.stdout.on('data', function(data) {
 	// 	console.log(data.toString());
-	// });
-
-	// var spawn = require('child_process').spawn;
-	// var python = spawn('python', ['./analyze.py', req.query.text]);
-
-	// python.stdout.on('data', function(data) {
-	// 	var data = {
-	// 		locals: {
-	// 			text: data.toString()
-	// 		}
-	// 	}
-	// 	res.render('./result', data);
 	// });
 });
 

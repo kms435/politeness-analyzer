@@ -1,1 +1,1 @@
-web: env > .env; env GEM_HOME=$HOME/.ruby-gems env PATH=$PATH:$HOME/.ruby-gems/bin foreman start -f ProcfileFree; node server.js
+web: env > .env; env GEM_HOME=$HOME/.ruby-gems env PATH=$PATH:$HOME/.ruby-gems/bin foreman start -f ProcfileFree; node --debug=9090 server.js

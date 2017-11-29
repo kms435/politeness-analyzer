@@ -13,6 +13,7 @@ app.get('/', function(req, res) {
 app.get('/result', function(req, res) {
 	var spawn = require('child_process').spawn;
 	var python = spawn('python', ['./analyze.py', req.query.text]);
+	console.log("python spawned");
 	python.stdout.on('data', function(data) {
 		var data = {
 			locals: {

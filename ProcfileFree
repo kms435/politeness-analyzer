@@ -1,2 +1,1 @@
-web: gunicorn -b 0.0.0.0:$PORT -w 4 politeness-analyzer.wsgi:application
-celery: python manage.py celeryd -c 3 --beat
+web: node server.js

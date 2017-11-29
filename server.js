@@ -7,9 +7,9 @@ var port = process.env.PORT || 8080;
 app.set('view engine', 'ejs');
 
 app.get('/', function(req, res) {
-	// res.render('./result', data);
+	res.render('./index');
 	// res.status(200).send('nothing to see here!');
-	console.log("hellooooo");
+	// console.log("hellooooo");
 });
 
 // app.get('/result', function(req, res) {

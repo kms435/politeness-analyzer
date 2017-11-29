@@ -6,6 +6,10 @@ var port = process.env.PORT || 8080;
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
+app.get('/', function(req, res) {
+	res.render('./index2');
+});
+
 app.get('/result', function(req, res) {
 	var spawn = require('child_process').spawn;
 	var python = spawn('python', ['./analyze.py', req.query.text]);

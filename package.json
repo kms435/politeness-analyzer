@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "express": "^4.13.4",
-    "ejs": "^1.0.0"
+    "ejs": "^1.0.0",
+    "watson-developer-cloud": "^2.39.0"
   }
 }

@@ -33,21 +33,35 @@ app.get('/analyze', function(req, res) {
 		}
 	}
 	natural_language_understanding.analyze(query, function(err, nluData) {
+		if (err) nluData = null;
 		var query = {
 			text: req.query.text,
 			tones: 'language',
 			sentences: false
 		};
 		tone_analyzer.tone(query, function(error, toneData) {
-			var toneData2 = {};
-			for (var i=0; i<toneData.document_tone.tone_categories[0].tones.length; i++) {
-				toneData2[toneData.document_tone.tone_categories[0].tones[i].tone_id] = toneData.document_tone.tone_categories[0].tones[i].score;
+			if (error) {
+				toneData2 = null;
+			} else {
+				var toneData2 = {};
+				for (var i=0; i<toneData.document_tone.tone_categories[0].tones.length; i++) {
+					toneData2[toneData.document_tone.tone_categories[0].tones[i].tone_id] = toneData.document_tone.tone_categories[0].tones[i].score;
+				}
 			}
-			var data = {
-				sentiment: nluData.sentiment.document,
-				emotion: nluData.emotion.document.emotion,
-				tone: toneData2
+			if (nluData == null) {
+				var data = {
+					sentiment: null,
+					emotion: null,
+					tone: toneData2
+				}
+			} else {
+				var data = {
+					sentiment: nluData.sentiment.document,
+					emotion: nluData.emotion.document.emotion,
+					tone: toneData2
+				}
 			}
+			
 			res.render('./analyze', {
 				data: JSON.stringify(data)
 			});

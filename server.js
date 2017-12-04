@@ -61,10 +61,8 @@ app.get('/analyze', function(req, res) {
 					tone: toneData2
 				}
 			}
-			
-			res.render('./analyze', {
-				data: JSON.stringify(data)
-			});
+
+			res.send(data);
 		});
 	});
 });

@@ -8,6 +8,13 @@ var natural_language_understanding = new WatsonNLU({
 	'version_date': '2017-02-27'
 });
 
+var ToneAnalyzer = require('watson-developer-cloud/tone-analyzer/v3');
+var tone_analyzer = new ToneAnalyzer({
+	username: 'ff68249b-e744-4d0a-8923-db4447b64cf6',
+	password: '0fRXxBhaa7Hp',
+	version_date: '2016-05-19'
+});
+
 var port = process.env.PORT || 8080;
 
 // set the view engine to ejs
@@ -25,14 +32,22 @@ app.get('/analyze', function(req, res) {
 			'emotion': {}
 		}
 	}
-	natural_language_understanding.analyze(query, function(err, data) {
-		if (err) {
-			console.log('error:', err);
-		} else {
+	natural_language_understanding.analyze(query, function(err, nluData) {
+		var query = {
+			text: req.query.text,
+			tones: 'language',
+			sentences: false
+		};
+		tone_analyzer.tone(query, function(error, toneData) {
+			var data = {
+				sentiment: nluData.sentiment,
+				emotion: nluData.emotion,
+				tone: toneData.document_tone.tone_categories[0].tones
+			}
 			res.render('./analyze', {
 				data: JSON.stringify(data)
 			});
-		}
+		});
 	});
 });
 

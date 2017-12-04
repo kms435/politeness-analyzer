@@ -39,10 +39,14 @@ app.get('/analyze', function(req, res) {
 			sentences: false
 		};
 		tone_analyzer.tone(query, function(error, toneData) {
+			var toneData2 = {};
+			for (var i=0; i<toneData.document_tone.tone_categories[0].tones.length; i++) {
+				toneData2[toneData.document_tone.tone_categories[0].tones[i].tone_id] = toneData.document_tone.tone_categories[0].tones[i].score;
+			}
 			var data = {
-				sentiment: nluData.sentiment,
-				emotion: nluData.emotion,
-				tone: toneData.document_tone.tone_categories[0].tones
+				sentiment: nluData.sentiment.document,
+				emotion: nluData.emotion.document.emotion,
+				tone: toneData2
 			}
 			res.render('./analyze', {
 				data: JSON.stringify(data)
